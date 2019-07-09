@@ -1,0 +1,12 @@
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://mymac:1112/eureka/,http://mymac:1113/eureka/
+server:
+  port: 1104
+spring:
+  application:
+    name: provider
