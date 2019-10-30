@@ -1,11 +1,20 @@
-
+management:
+  security:
+    enabled: false
 
 eureka:
   client:
     service-url:
       defaultZone: http://mymac:1112/eureka/,http://mymac:1113/eureka/
+    region: chenhe-region
 server:
   port: 1102
 spring:
   application:
     name: eureka-client
+
+info:
+  app:
+    name: client
+    ip: mymac:${server.port}
+    desc: '测试客户端'

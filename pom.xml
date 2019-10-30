@@ -10,7 +10,7 @@
     <modules>
         <module>eureka-server</module>
         <module>provider</module>
-        <module>zuul-server</module>
+        <module>gateway</module>
         <module>eureka-client</module>
     </modules>
     <packaging>pom</packaging>
@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.10.RELEASE</version>
+        <version>2.1.7.RELEASE</version>
         <relativePath/> 
     </parent>
 
@@ -31,7 +31,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Dalston.SR3</version>
+                <version>Greenwich.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
