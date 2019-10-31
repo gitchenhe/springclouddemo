@@ -1,6 +1,5 @@
 package com.chenhe.client.service;
 
-import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -8,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @date 2019-07-09 11:37
  * @desc
  */
-@FeignClient("provider")
+//@FeignClient("provider")
 public interface RemoteService {
     @GetMapping("/api/time")
     String timestamp();

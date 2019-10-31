@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @RestController
 public class InfoController {
-    @Autowired
+   // @Autowired
     RemoteService remoteService;
 
     @Autowired
