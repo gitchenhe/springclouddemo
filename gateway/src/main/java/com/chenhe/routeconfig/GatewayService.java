@@ -2,10 +2,7 @@ package com.chenhe.routeconfig;
 
 import com.chenhe.bean.GateRoute;
 import com.google.gson.Gson;
-import javafx.scene.input.RotateEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
@@ -14,6 +11,8 @@ import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
@@ -33,6 +32,8 @@ public class GatewayService implements ApplicationEventPublisherAware, CommandLi
     @Autowired
     RedisRouteDefinitionRepository redisRouteDefinitionRepository;
     ApplicationEventPublisher publisher;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
     public String save(){
         //从数据库拿到路由配置
         List<GateRoute> gateRoutes = getGateRoute();
@@ -42,7 +43,9 @@ public class GatewayService implements ApplicationEventPublisherAware, CommandLi
         gateRoutes.forEach(gateWay -> {
             RouteDefinition routeDefinition = new RouteDefinition();
             Map<String,String> predicateParams = new HashMap<>(8);
+            //路由断言定义表
             PredicateDefinition predicateDefinition = new PredicateDefinition();
+            //过滤器定义表
             FilterDefinition filterDefinition = new FilterDefinition();
 
             Map<String,String> filterParams = new HashMap<>(8);
@@ -51,14 +54,14 @@ public class GatewayService implements ApplicationEventPublisherAware, CommandLi
             predicateParams.put("pattern","/api"+gateWay.getPath());
             predicateParams.put("pathPattern","/api"+gateWay.getPath());
 
-            URI uri = UriComponentsBuilder.fromUriString("lb://"+gateWay.getServiceId()).build().toUri();
-            filterDefinition.setName("StripPrefix");
+            URI uri = UriComponentsBuilder.fromUriString(gateWay.getUrl()).build().toUri();
+            filterDefinition.setName("RequestRateLimiter");
 
             //路径去前缀
-            filterParams.put("_genkey_0",gateWay.getStripPrefix().toString());
-            //令牌桶流速
+            filterParams.put("_genkey_0", Optional.ofNullable(gateWay.getStripPrefix()).orElse(new Integer(0)).toString());
+            //令牌桶流速: 允许用户每秒处理多少个请求
             filterParams.put("redis-rate-limiter.replenishRate",gateWay.getLimiterRate());
-            //令牌通容量
+            //令牌通容量: 令牌桶的容量，允许在一秒钟内完成的最大请求数
             filterParams.put("redis-rate-limiter.burstCapacity",gateWay.getLimiterCapacity());
             //限流策略
             filterParams.put("key-resolver","#{@remoteAddrKeyResolver}");
@@ -77,19 +80,15 @@ public class GatewayService implements ApplicationEventPublisherAware, CommandLi
         return "success";
     }
 
-    private List<GateRoute> getGateRoute() {
-        List<GateRoute> gateRoutes = new ArrayList<>();
-
-        for (int i=0;i<10;i++){
-            GateRoute gateRoute = new GateRoute();
-            gateRoutes.add(gateRoute);
-        }
+    public List<GateRoute> getGateRoute() {
+        String sql = "select * from t_gateway_router where enabled = 'enable'";
+        List<GateRoute> gateRoutes = jdbcTemplate.query(sql, new Object[]{},new BeanPropertyRowMapper<GateRoute>(GateRoute.class));
         return gateRoutes;
     }
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = publisher;
+        this.publisher = applicationEventPublisher;
     }
 
     public void deleteRoute(String routeId){

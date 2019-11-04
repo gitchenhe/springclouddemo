@@ -12,7 +12,7 @@ public class GateRoute {
     //
     private Integer id;
 
-    //映射路劲
+    //映射路径
     private String path;
 
     //映射服务
@@ -34,5 +34,7 @@ public class GateRoute {
     private Integer stripPrefix;
 
     private String routeOrder;
+
+
 
 }

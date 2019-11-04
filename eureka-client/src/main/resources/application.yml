@@ -18,3 +18,4 @@ info:
     name: client
     ip: mymac:${server.port}
     desc: '测试客户端'
+
