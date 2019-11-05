@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @desc
  */
 @RestController
-@RequestMapping("/resources")
+@RequestMapping("/resource")
 public class ResourceController {
 
     /**
