@@ -29,8 +29,8 @@ public class SSOUserDetailsService implements UserDetailsService {
         if (!"admin".equals(userName) ) {
             throw new UsernameNotFoundException("用户不存在");
         }
-
-        return new User(userName,passwordEncoder.encode("123456"), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
+        UserDetails userDetails = new User(userName,passwordEncoder.encode("123456"), AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER"));
+        return userDetails;
     }
 
     public static void main(String[] args) {

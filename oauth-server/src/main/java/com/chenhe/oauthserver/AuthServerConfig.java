@@ -1,9 +1,7 @@
 package com.chenhe.oauthserver;
 
-import com.chenhe.oauthserver.service.RedisAuthenticationCodeServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -20,7 +18,6 @@ import org.springframework.security.oauth2.provider.client.JdbcClientDetailsServ
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 
@@ -32,53 +29,51 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @EnableAuthorizationServer //启动OAuth2.0授权服务机制
-public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-
-    @Value("${resource.id:spring-boot-application}")
-    private String resourceId;
-
-    @Value("${access_token.validity_period:36000}")
-    private int accessTokenValiditySeconds = 36000;
-
-    @Autowired
-    UserDetailsService userDetailsService;
+public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Resource
-    private RedisAuthenticationCodeServices redisAuthenticationCodeServices;
-
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    RedisConnectionFactory redisConnectionFactory;
+    private RedisConnectionFactory redisConnectionFactory;
 
     @Bean
     RedisTokenStore redisTokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
     }
 
+    //token存储数据库
+//    @Bean
+//    public JdbcTokenStore jdbcTokenStore(){
+//        return new JdbcTokenStore(dataSource);
+//    }
 
-    /**
-     * 用来配置授权（authorization）以及令牌（token）的访问端点和令牌服务(token services)。
-     *
-     * @param endpoints
-     * @throws Exception
-     */
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.withClientDetails(clientDetails());
+    }
+
+    @Bean
+    public ClientDetailsService clientDetails() {
+        return new JdbcClientDetailsService(dataSource);
+    }
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-
         endpoints.tokenStore(redisTokenStore())
                 .userDetailsService(userDetailsService)
-                .authenticationManager(authenticationManager);
-        endpoints.tokenServices(defaultTokenServices());
+                .authenticationManager(authenticationManager)
+                .tokenServices(defaultTokenServices());
+
     }
 
     /**
      * <p>注意，自定义TokenServices的时候，需要设置@Primary，否则报错，</p>
-     *
      * @return
      */
     @Primary
@@ -93,34 +88,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return tokenServices;
     }
 
-    private ClientDetailsService clientDetails() {
-        return new JdbcClientDetailsService(dataSource);
-    }
-
-    /**
-     * 用来配置令牌端点(Token Endpoint)的安全约束.
-     *
-     * @param security
-     * @throws Exception
-     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.tokenKeyAccess("permitAll()");
-        security.checkTokenAccess("isAuthenticated()");
-        security.allowFormAuthenticationForClients();
-    }
-
-
-    /**
-     * 用来配置客户端详情
-     * @param clients
-     * @throws Exception
-     */
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        //默认值InMemoryTokenStore对于单个服务器是完全正常的（即，在发生故障的情况下，低流量和热备份备份服务器）。大多数项目可以从这里开始，也可以在开发模式下运行，以便轻松启动没有依赖关系的服务器。
-        //这JdbcTokenStore是同一件事的JDBC版本，它将令牌数据存储在关系数据库中。如果您可以在服务器之间共享数据库，则可以使用JDBC版本，如果只有一个，则扩展同一服务器的实例，或者如果有多个组件，则授权和资源服务器。要使用JdbcTokenStore你需要“spring-jdbc”的类路径。
-        clients.withClientDetails(clientDetails());
+        security.tokenKeyAccess("permitAll()")
+                .checkTokenAccess("isAuthenticated()");
     }
 
 }
