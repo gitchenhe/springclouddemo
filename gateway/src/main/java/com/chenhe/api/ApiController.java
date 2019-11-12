@@ -2,6 +2,7 @@ package com.chenhe.api;
 
 import com.chenhe.routeconfig.GatewayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class ApiController {
 
 
     @RequestMapping("clearRoute/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String clearRoute(@PathVariable String id){
         gatewayService.deleteRoute(id);
         return "OK";

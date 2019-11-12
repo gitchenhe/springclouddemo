@@ -1,27 +1,34 @@
 package com.chenhe.oauthserver.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author chenhe
- * @date 2019-11-06 17:25
+ * @date 2019-11-08 09:58
  * @desc
  */
-
-@RestController
-@RequestMapping("/test")
+@Controller
+@RequestMapping("auth")
 public class TestController {
-    /**
-     * 需要用户角色权限
-     *
-     * @return
-     */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String helloUser() {
-        return "hello tester";
+
+    @RequestMapping("doauth")
+    public String doAuth(){
+
+        return "doauth";
+    }
+
+    @RequestMapping("code")
+    public String getCode(@RequestParam(value = "code",required = false) String code, Model model) {
+        if (StringUtils.isEmpty(code)){
+            model.addAttribute("code",code);
+        }
+        return "callback";
     }
 }

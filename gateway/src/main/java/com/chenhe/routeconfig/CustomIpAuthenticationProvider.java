@@ -1,5 +1,6 @@
 package com.chenhe.routeconfig;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
  * @date 2019-11-04 14:08
  * @desc
  */
+@Slf4j
 @Component
 public class CustomIpAuthenticationProvider implements AuthenticationProvider {
 
@@ -23,13 +25,15 @@ public class CustomIpAuthenticationProvider implements AuthenticationProvider {
         WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) authentication.getDetails();
         String userIp = webAuthenticationDetails.getRemoteAddress();
 
-
-
-        return null;
+        log.info("========authenticate=======");
+        authentication.setAuthenticated(
+                false
+        );
+        return authentication;
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return false;
+        return true;
     }
 }

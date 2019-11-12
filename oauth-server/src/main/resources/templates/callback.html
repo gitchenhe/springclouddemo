@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>认证结果</title>
+</head>
+<body>
+<h1>认证code</h1>
+<span th:text="${#code}"></span>
+<a th:href="@{/oauth/token?grant_type=authorization_code&code={code}&client_id=normal-app&client_secret=123456&redirect_uri=http://localhost:8080/auth/code(code=${#code})}">Login</a>
+</body>
+</html>

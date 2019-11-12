@@ -25,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Slf4j
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -49,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .requestMatchers()
-                .antMatchers("/login**", "/oauth/**")
+                .antMatchers("/login**", "/oauth/**","/auth/**")
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()

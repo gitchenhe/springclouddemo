@@ -3,6 +3,7 @@ package com.chenhe.oauthserver;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author chenhe
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 @Order(1)
 public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(AccessDeniedException.class)
-    public void customGenericExceptionHnadler(AccessDeniedException exception) { //还可以声明接收其他任意参数
-        exception.printStackTrace();
+    @ResponseBody
+    public String customGenericExceptionHnadler(AccessDeniedException exception) { //还可以声明接收其他任意参数
+        //exception.printStackTrace();
+        return "😀😀😀<br>对不起,无权限访问!";
     }
 }

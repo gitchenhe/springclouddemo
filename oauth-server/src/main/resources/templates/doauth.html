@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>认证结果</title>
+</head>
+<body>
+<h1>准备认证</h1>
+<a th:href="@{/oauth/authorize?client_id=normal-app&response_type=code&scope=read&redirect_uri=http://localhost:8080/auth/code}">认证</a>
+</body>
+</html>
