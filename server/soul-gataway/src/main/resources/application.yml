@@ -1,0 +1,17 @@
+soul:
+  http:
+    adminUrl: http://localhost:9095
+    contextPath: /soul-test
+    appName: soul-test
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://chenhe:chenhe123123@127.0.0.1:1112/eureka/,http://chenhe:chenhe123123@127.0.0.1:1113/eureka/
+    region: chenhe-region
+      # defaultZone: http://chenhe:chenhe123123@chenheyun:1112/eureka,http://chenhe:chenhe123123@chenheyun:1113/eureka,http://chenhe:chenhe123123@chenheyun:1114/eureka
+
+
+spring:
+    application:
+      name: eureka-client
