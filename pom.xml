@@ -14,8 +14,11 @@
     </modules>
     <packaging>pom</packaging>
 
+    <properties>
+
+    </properties>
+
     <name>springbootdemo</name>
-    <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
     <parent>
@@ -61,11 +64,36 @@
                 <artifactId>spring-boot-admin-starter-server</artifactId>
                 <version>2.1.6</version>
             </dependency>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-starter-client</artifactId>
-                <version>2.1.6</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-1</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>/Users/chenhe/Documents/workspace/source-code/springclouddemo/system.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -1,0 +1,33 @@
+eureka:
+  port: @server.eureka.port@
+  host: @server.eureka.host@
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.host}:${eureka.port}/eureka/
+server:
+  port: @service.provider.port@
+spring:
+  application:
+    name: provider
+  security:
+    user:
+      password: chenhe123123
+      name: chenhe
+  cloud:
+    config:
+      profile: dev
+      label: master
+      discovery:
+        enabled: true
+        service-id: config-server-1
+logging:
+  level:
+    root: info
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  security:
+    enabled: false

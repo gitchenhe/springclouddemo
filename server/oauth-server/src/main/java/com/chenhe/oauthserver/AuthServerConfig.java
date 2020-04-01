@@ -75,7 +75,14 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.withClientDetails(clientDetails());
+        clients.inMemory()
+                .withClient("clientapp")
+                .secret("112233")
+                .redirectUris("http://localhost:9001/callback")
+                // 授权码模式
+                .authorizedGrantTypes("authorization_code")
+                .scopes("read_userinfo", "read_contacts");
+        //clients.withClientDetails(clientDetails());
     }
 
     @Bean
@@ -86,7 +93,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
-        endpoints
+       /* endpoints
                 //认证管理器
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
@@ -97,7 +104,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 //authCode存储
                 .authorizationCodeServices(authCodeRedisSaveService)
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST);
-
+*/
     }
 
     @Bean
@@ -131,8 +138,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
+        /*security.tokenKeyAccess("permitAll()")
+                .checkTokenAccess("isAuthenticated()");*/
     }
 
 }

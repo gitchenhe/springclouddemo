@@ -1,0 +1,19 @@
+server:
+  port: @server.gateway.port@
+
+spring:
+  application:
+    name: spring-gateway
+    security:
+      user:
+        name: chenhe
+        password: chenhe123123
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${spring:security:user:name}:${spring:security:user:password}@${eureka:host}:${eureka:port}/eureka/
+
+logging:
+  level:
+    root: debug

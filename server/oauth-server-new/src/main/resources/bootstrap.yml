@@ -1,0 +1,11 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: oauth-server
+  security:
+    user:
+      name: chenhe
+      password: chenhe123123
+
+
