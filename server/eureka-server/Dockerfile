@@ -1,12 +1,13 @@
-FROM openjdk:8-alpine
+FROM maven:3.5.0-jdk-alpine AS builder
 
 
 LABEL author="陈贺<1392928762@qq.cn>"
 
-VOLUME /tmp
+ADD pom.xml pom.xml
 
+RUN mvn package -Dmaven.test.skip=true
 
-ADD target/eureka-server-1.0.1.jar app.jar
+COPY --from=builder ./target/eureka-server-1.0.1.jar /app.jar
 
 # 修改这个文件的访问时间和修改时间为当前时间。
 RUN sh -c 'touch /app.jar'
@@ -15,3 +16,4 @@ RUN sh -c 'touch /app.jar'
 EXPOSE 1001
 
 ENTRYPOINT ["java","-jar","/app.jar" ]
+
