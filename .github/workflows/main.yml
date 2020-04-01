@@ -27,7 +27,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version:1.8
-      run: mvn -B package --file pom.xml
 
     - name: 开始打包
       run:
