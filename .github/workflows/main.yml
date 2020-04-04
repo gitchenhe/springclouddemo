@@ -34,7 +34,7 @@ jobs:
         mvn -B package --file pom.xml
         echo 打包完成
 
-    -name: 构建并上传上传eureka镜像
+    - name: 构建并上传上传eureka镜像
       env:
         aliyun_username: ${{ secrets.aliyun_username }}
         aliyun_password: ${{ secrets.aliyun_password }}
