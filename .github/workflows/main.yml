@@ -33,3 +33,17 @@ jobs:
         echo 准备打包
         mvn -B package --file pom.xml
         echo 打包完成
+
+    -name: 构建并上传上传eureka镜像
+      env:
+        aliyun_username: ${{ secrets.aliyun_username }}
+        aliyun_password: ${{ secrets.aliyun_password }}
+        image_name: eureka
+        image_tag: latest
+      run:
+        echo 准备执行Dockerfile
+        sudo docker login --username=${aliyun_username} registry.cn-beijing.aliyuncs.com --password=${{ secrets.aliyun_password }}
+        sudo docker build -t ${image_name}:${image_tag} ./server/eureka-server/
+        sudo docker tag ${image_name}:${image_tag} registry.cn-hangzhou.aliyuncs.com/ch-docker/docker:${image_tag}
+        sudo docker push registry.cn-hangzhou.aliyuncs.com/ch-docker/docker:${image_tag}
+        echo 上传完毕
