@@ -29,10 +29,7 @@ jobs:
         java-version: 1.8
 
     - name: 开始打包
-      run:
-        echo 准备打包
-        mvn -B package --file pom.xml
-        echo 打包完成
+      run: mvn -B package --file pom.xml
 
     - name: 构建并上传上传eureka镜像
       env:
