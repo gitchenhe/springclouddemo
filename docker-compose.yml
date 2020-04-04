@@ -1,0 +1,4 @@
+version: '3'
+services:
+  eureka-server:
+    build: ./server/eureka-server/

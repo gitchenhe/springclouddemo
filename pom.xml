@@ -15,7 +15,12 @@
     <packaging>pom</packaging>
 
     <properties>
+        <server.eureka.host>49.232.172.44</server.eureka.host>
+        <server.eureka.port>1001</server.eureka.port>
+        <server.config.port>1002</server.config.port>
+        <server.gateway.port>1003</server.gateway.port>
 
+        <service.provider.port>1100</service.provider.port>
     </properties>
 
     <name>springbootdemo</name>
@@ -74,44 +79,5 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-1</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>/Users/chenhe/Documents/workspace/source-code/springclouddemo/system.properties</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!--<plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>1.2.0</version>
-                <configuration>
-                    <imageName>${project.groupId}/${project.artifactId}:${project.version}</imageName>
-                    <baseImage>java:8</baseImage>
-                    <maintainer>keppel</maintainer>
-                    <entryPoint>["java", "-jar", "-Dspring.profiles.active=prod", "/${project.build.finalName}.jar"]</entryPoint>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>-->
-        </plugins>
     </build>
 </project>
