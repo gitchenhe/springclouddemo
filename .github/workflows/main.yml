@@ -29,7 +29,7 @@ jobs:
         java-version: 1.8
 
     - name: 开始打包
-      run: mvn -B package --file pom.xml
+      run: mvn -B package --file pom.xml -Dmaven.test.skip=true
 
     - name: 构建并上传上传eureka镜像
       env:
@@ -40,5 +40,5 @@ jobs:
       run: |
         sudo docker login --username=${aliyun_username} registry.cn-beijing.aliyuncs.com --password=${{ secrets.aliyun_password }}
         sudo docker build -t ${image_name}:${image_tag} ./server/eureka-server/
-        sudo docker tag ${image_name}:${image_tag} registry.cn-hangzhou.aliyuncs.com/ch-docker/docker:${image_tag}
-        sudo docker push registry.cn-hangzhou.aliyuncs.com/ch-docker/docker:${image_tag}
+        sudo docker tag ${image_name}:${image_tag} registry.cn-beijing.aliyuncs.com/ch-docker/chenhe-docker:${image_tag}
+        sudo docker push registry.cn-beijing.aliyuncs.com/ch-docker/chenhe-docker:${image_tag}
