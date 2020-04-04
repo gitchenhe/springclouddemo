@@ -40,5 +40,5 @@ jobs:
       run: |
         sudo docker login --username=${aliyun_username} registry.cn-beijing.aliyuncs.com --password=${{ secrets.aliyun_password }}
         sudo docker build -t ${image_name}:${image_tag} ./server/eureka-server/
-        sudo docker tag ${image_name}:${image_tag} registry.cn-beijing.aliyuncs.com/ch-docker/chenhe-docker:${image_tag}
-        sudo docker push registry.cn-beijing.aliyuncs.com/ch-docker/chenhe-docker:${image_tag}
+        sudo docker tag ${image_name}:${image_tag} registry.cn-beijing.aliyuncs.com/ch-docker/chenhe-docker:${image_name}:${image_tag}
+        sudo docker push registry.cn-beijing.aliyuncs.com/ch-docker/chenhe-docker:${image_name}:${image_tag}
