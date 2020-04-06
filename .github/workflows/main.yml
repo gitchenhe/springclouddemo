@@ -46,15 +46,15 @@ jobs:
         sudo docker push ${image_registry_url}:${image_tag}
 
     - name: 构建并上传上传Config镜像
-        env:
-          aliyun_username: ${{ secrets.aliyun_username }}
-          aliyun_password: ${{ secrets.aliyun_password }}
-          image_registry_server: registry.cn-beijing.aliyuncs.com
-          image_registry_url: registry.cn-beijing.aliyuncs.com/ch-docker/springcloud-config
-          image_name: springclouddemo-config
-          image_tag: latest
-        run: |
-          sudo docker login --username=${aliyun_username} ${image_registry_server} --password=${{ secrets.aliyun_password }}
-          sudo docker build -t ${image_name}:${image_tag} ./server/config-server/
-          sudo docker tag ${image_name}:${image_tag} {image_registry_url}:${image_tag}
-          sudo docker push ${image_registry_url}:${image_tag}
+      env:
+        aliyun_username: ${{ secrets.aliyun_username }}
+        aliyun_password: ${{ secrets.aliyun_password }}
+        image_registry_server: registry.cn-beijing.aliyuncs.com
+        image_registry_url: registry.cn-beijing.aliyuncs.com/ch-docker/springcloud-config
+        image_name: springclouddemo-config
+        image_tag: latest
+      run: |
+        sudo docker login --username=${aliyun_username} ${image_registry_server} --password=${{ secrets.aliyun_password }}
+        sudo docker build -t ${image_name}:${image_tag} ./server/config-server/
+        sudo docker tag ${image_name}:${image_tag} {image_registry_url}:${image_tag}
+        sudo docker push ${image_registry_url}:${image_tag}
