@@ -42,7 +42,7 @@ jobs:
       run: |
         sudo docker login --username=${aliyun_username} ${image_registry_server} --password=${{ secrets.aliyun_password }}
         sudo docker build -t ${image_name}:${image_tag} ./server/eureka-server/
-        sudo docker tag ${image_name}:${image_tag} {image_registry_url}:${image_tag}
+        sudo docker tag ${image_name}:${image_tag} ${image_registry_url}:${image_tag}
         sudo docker push ${image_registry_url}:${image_tag}
 
     - name: 构建并上传上传Config镜像
@@ -56,5 +56,5 @@ jobs:
       run: |
         sudo docker login --username=${aliyun_username} ${image_registry_server} --password=${{ secrets.aliyun_password }}
         sudo docker build -t ${image_name}:${image_tag} ./server/config-server/
-        sudo docker tag ${image_name}:${image_tag} {image_registry_url}:${image_tag}
+        sudo docker tag ${image_name}:${image_tag} ${image_registry_url}:${image_tag}
         sudo docker push ${image_registry_url}:${image_tag}
